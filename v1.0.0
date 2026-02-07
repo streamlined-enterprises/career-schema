@@ -3,7 +3,7 @@
   "$id": "https://github.com/yourusername/career-schema/v2.0.0/schema.json",
   "title": "Extended Career Data Schema",
   "description": "A versatile, superset schema of JSON Resume designed for career 'factories'. Supports extensive metadata, emphasis scoring, and customizable accomplishment sections while maintaining backward compatibility.",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "type": "object",
   "required": [
     "$schema",
