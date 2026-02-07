@@ -1,0 +1,704 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/streamlined-enterprises/career-schema/v1.0.0/schema.json",
+  "title": "Career Data Schema",
+  "description": "A comprehensive, extensible JSON schema for career data with support for multiple resume variations, emphasis scoring, and rich metadata.",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "$schema",
+    "basics",
+    "work"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The schema version being used"
+    },
+    "basics": {
+      "type": "object",
+      "description": "Core personal and contact information",
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name"
+        },
+        "label": {
+          "type": "string",
+          "description": "Professional title or headline"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to professional photo"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Personal website or portfolio"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Professional summary or bio"
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "region": {
+              "type": "string",
+              "description": "State or province"
+            }
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "description": "Social and professional network profiles",
+          "items": {
+            "type": "object",
+            "required": [
+              "network",
+              "url"
+            ],
+            "properties": {
+              "network": {
+                "type": "string",
+                "description": "e.g., LinkedIn, GitHub, Twitter"
+              },
+              "username": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      }
+    },
+    "work": {
+      "type": "array",
+      "description": "Work experience history",
+      "items": {
+        "type": "object",
+        "required": [
+          "company",
+          "position",
+          "startDate"
+        ],
+        "properties": {
+          "company": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Company website"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "ISO 8601 format: YYYY-MM-DD"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "Use null for current position"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Brief role overview"
+          },
+          "highlights": {
+            "type": "array",
+            "description": "Key achievements and responsibilities",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "Keywords for filtering and emphasis (e.g., 'leadership', 'cloud', 'security')",
+            "items": {
+              "type": "string"
+            }
+          },
+          "emphasis": {
+            "type": "object",
+            "description": "Relevance scores (0-10) for different resume angles",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "examples": [
+              {
+                "executive": 9,
+                "technical": 7,
+                "security": 10
+              }
+            ]
+          },
+          "metrics": {
+            "type": "object",
+            "description": "Quantifiable achievements",
+            "properties": {
+              "teamSize": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "budget": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Annual budget in USD"
+              },
+              "revenue": {
+                "type": "number",
+                "description": "Revenue impact in USD"
+              },
+              "uptime": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage"
+              },
+              "custom": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "description": "Additional custom metrics"
+              }
+            }
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Control which resumes include this experience",
+            "properties": {
+              "public": {
+                "type": "boolean",
+                "default": true
+              },
+              "confidential": {
+                "type": "boolean",
+                "default": false
+              },
+              "includeIn": {
+                "type": "array",
+                "description": "Specific resume profiles to include this in",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "excludeFrom": {
+                "type": "array",
+                "description": "Specific resume profiles to exclude this from",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "institution",
+          "studyType"
+        ],
+        "properties": {
+          "institution": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "area": {
+            "type": "string",
+            "description": "Field of study"
+          },
+          "studyType": {
+            "type": "string",
+            "description": "e.g., Bachelor, Master, PhD"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "score": {
+            "type": "string",
+            "description": "GPA or grade"
+          },
+          "courses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "honors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Skill category or specific skill"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "Beginner",
+              "Intermediate",
+              "Advanced",
+              "Expert",
+              "Master"
+            ]
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "yearsOfExperience": {
+            "type": "number",
+            "minimum": 0
+          },
+          "category": {
+            "type": "string",
+            "description": "e.g., 'Technical', 'Leadership', 'Language'",
+            "examples": [
+              "Technical",
+              "Leadership",
+              "Language",
+              "Soft Skills"
+            ]
+          }
+        }
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "description": "Professional certifications and licenses",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "issuer"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Certifying organization"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date obtained"
+          },
+          "expires": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Verification URL"
+          },
+          "credentialId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "speaking": {
+      "type": "array",
+      "description": "Conference talks, keynotes, and presentations",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "event",
+          "date"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "event": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "location": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Recording or slides URL"
+          },
+          "audienceSize": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Keynote",
+              "Technical Talk",
+              "Panel",
+              "Workshop",
+              "Webinar",
+              "Lightning Talk"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "publisher",
+          "releaseDate"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Title"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "entity": {
+            "type": "string",
+            "description": "Company or organization"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Professional",
+              "Open Source",
+              "Personal",
+              "Academic"
+            ]
+          }
+        }
+      }
+    },
+    "awards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "awarder"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "awarder": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "volunteer": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "organization",
+          "position"
+        ],
+        "properties": {
+          "organization": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "language"
+        ],
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "fluency": {
+            "type": "string",
+            "enum": [
+              "Native",
+              "Fluent",
+              "Professional",
+              "Intermediate",
+              "Basic"
+            ]
+          }
+        }
+      }
+    },
+    "interests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Reference text or quote"
+          },
+          "relationship": {
+            "type": "string",
+            "description": "e.g., 'Former Manager', 'Colleague'"
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "phone": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Metadata about this career data file",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Semantic version of your data"
+        },
+        "lastModified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "canonical": {
+          "type": "boolean",
+          "default": true,
+          "description": "Is this the master/source file?"
+        },
+        "variant": {
+          "type": "string",
+          "description": "e.g., 'executive', 'technical', 'speaker'"
+        },
+        "theme": {
+          "type": "string",
+          "description": "Default layout/theme preference"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "description": "ISO 639-1 language code"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Internal notes about this file"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
