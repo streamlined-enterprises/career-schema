@@ -1,6 +1,6 @@
 # Extended JSON Resume Schema (Career Factory)
 
-A versatile, backwards-compatible superset of the JSON Resume data model for maintaining a single “career database” and generating many targeted resume variants and layouts. This repo publishes `career-schema-v2.json` as the canonical JSON Schema for validating those data files. [code_file:79]
+A versatile, backwards-compatible superset of the JSON Resume data model for maintaining a single “career database” and generating many targeted resume variants and layouts. This repo publishes a canonical JSON Schema for validating those data files. 
 
 ## Goals
 
